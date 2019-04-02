@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.noname.note.mapper.NoteMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="resultMap" type="com.noname.note.entity.Note">
+        <id column="id" property="id"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="name" property="name"/>
+        <result column="p_id" property="pId"/>
+        <result column="p_ids" property="pIds"/>
+        <result column="text" property="text"/>
+        <result column="tag" property="tag"/>
+        <result column="from" property="from"/>
+    </resultMap>
+
+    <resultMap id="treeNodeResultMap" type="org.springblade.core.tool.node.TreeNode">
+        <id column="id" property="id"/>
+        <result column="p_id" property="parentId"/>
+        <result column="name" property="title"/>
+        <result column="id" property="value"/>
+        <result column="id" property="key"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="baseColumnList">
+        select
+        id, p_id, p_ids, name, tag, from
+    </sql>
+
+    <sql id="allColumnList">
+        select
+        id, p_id, p_ids, name, tag, from, text
+    </sql>
+
+
+    <select id="tree" resultMap="treeNodeResultMap">
+        select id, p_id, name, id, id from note_info where is_deleted = 0 and create_user = #{userId}
+    </select>
+
+    <select id="getParents" resultMap="resultMap">
+        <include refid="baseColumnList"/> note_info where is_deleted = 0 and p_id = 0 and create_user = #{userId}
+    </select>
+
+
+</mapper>
