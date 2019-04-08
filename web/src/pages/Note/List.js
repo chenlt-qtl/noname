@@ -9,7 +9,9 @@ import styles from "../../components/GlobalHeader/index.less";
 import HeaderSearch from "../../components/HeaderSearch";
 import UserCenter from "../../components/GlobalHeader/UserCenter";
 import SiderNote from "../../components/Note/SiderNote";
+import SelectNote from "../../components/Note/SelectNote";
 import { getCurrentUser } from '../../utils/authority';
+import {NOTE_INIT,GET_TABS,GET_TREE} from "../../actions/note";
 
 const { Header, Content, Sider } = Layout;
 const TabPane = Tabs.TabPane;
@@ -27,20 +29,16 @@ if(!currentUser){
   loading: loading.models.note,
 }))
 class NoteList extends React.Component {
-
   state = {
     user: currentUser,
-    tabPid: null,
-    treePid: null,
   };
-
-  onParentSelect = (value) =>{
+  componentWillMount() {
     const {
       dispatch,
     } = this.props;
 
-    dispatch(GET_TABS(value));
-  };
+    dispatch(NOTE_INIT(currentUser));
+  }
 
   onTabSelect = (value) =>{
     const {
@@ -50,22 +48,24 @@ class NoteList extends React.Component {
     dispatch(GET_TREE(value));
   }
 
+
+  onParentSelect = (value) =>{
+
+  };
+
   render() {
     const {
       note: {
-        parents,
-        tabs,
+        selectValue,
+        selectData,
+        tabValue,
+        tabData,
+        treeValue,
+        treeData,
       },
     } = this.props;
 
-    const parentOption = parents.map(d => <Option key={d.id}>{d.title}</Option>);
-    const tabData = tabs.map(d => <TabPane tab={d.title} key={d.id}></TabPane>);
-    let treeData = [];
-    if(tabs.length>0){
-      treeData = this.state.tree[tabs[0]['id']];
-    }
-    console.log(treeData);
-
+    const tabs = tabData.map(d => <TabPane tab={d.title} key={d.id}></TabPane>);
     const content = (
       <div>
         <p>创建日期:20190301</p>
@@ -80,24 +80,12 @@ class NoteList extends React.Component {
           <div className="logo" />
           <Tabs type="card" style={{marginTop: '10px',marginRight: '100px',display:'inline-block'}}
             onChange={this.onTabSelect}>
-            {tabData}
+            {tabs}
           </Tabs>
           <div className={styles.right} style={{ marginRight: 8 }}>
+            <SelectNote onParentSelect = {this.onParentSelect}
+            selectValue={selectValue} selectData={selectData}/>
 
-            <Select style={{ width: 200 ,marginRight: 5 }} value={parents.length>0?parents[0]['id']:''}
-                    onSelect={this.onParentSelect}
-              dropdownRender={parent => (
-                <div>
-                  {parent}
-                  <Divider style={{ margin: '4px 0' }} />
-                  <div style={{ padding: '8px', cursor: 'pointer' }}>
-                    <Icon type="setting" /> 管理笔记本
-                  </div>
-                </div>
-              )}
-            >
-              {parentOption}
-            </Select>
             <HeaderSearch
               className={`${styles.action} ${styles.search}`}
               placeholder={formatMessage({ id: 'component.note.search' })}
@@ -118,7 +106,7 @@ class NoteList extends React.Component {
         </Header>
         <Layout>
           <Sider width={240} style={{ background: '#fff' }}>
-            <SiderNote/>
+            <SiderNote treeData={treeData}/>
           </Sider>
           <Layout style={{ padding: '0 24px 24px' }}>
             <div style={{padding:'10px'}}>

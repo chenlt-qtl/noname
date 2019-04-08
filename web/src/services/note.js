@@ -1,6 +1,5 @@
 import { stringify } from 'qs';
 import request from '../utils/request';
-import func from '../utils/Func';
 
 // =====================笔记===========================
 
@@ -15,5 +14,5 @@ export async function getTabs(params) {
 }
 
 export async function getTree(params) {
-  return request('/api/note/tree');
+  return request(`/api/note/tree?${stringify(params)}`);
 }

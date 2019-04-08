@@ -1,34 +1,38 @@
 import { delay } from 'roadhog-api-doc';
 
-const proxy = {
-  'GET /api/note/parents': {
+function getParents(req, res){
+  const json = {
     code: 200,
-    data: [
-        {
-          id: '1',
-          title: '笔记本1',
-        },
-        {
-          id: '2',
-          title: '笔记本2',
-        },
-        {
-          id: '3',
-          title: '笔记本3',
-        },
-        {
-          id: '4',
-          title: '笔记本4',
-        },
-        {
-          id: '5',
-          title: '笔记本5',
-        },
-    ],
+      data: [
+    {
+      id: '1',
+      title: '笔记本1',
+    },
+    {
+      id: '2',
+      title: '笔记本2',
+    },
+    {
+      id: '3',
+      title: '笔记本3',
+    },
+    {
+      id: '4',
+      title: '笔记本4',
+    },
+    {
+      id: '5',
+      title: '笔记本5',
+    },
+  ],
     message: 'success',
     success: true,
-  },
-  'GET /api/note/tabs': {
+  };
+  return res.json(json);
+}
+
+function getTabs(req, res) {
+  const json = {
     code: 200,
     data: [
       {
@@ -54,8 +58,12 @@ const proxy = {
     ],
     message: 'success',
     success: true,
-  },
-  'GET /api/note/tree': {
+  }
+  return res.json(json);
+}
+function getTree(req, res) {
+  console.log(req);
+  const json = {
     code: 200,
     data: [
       {
@@ -79,6 +87,12 @@ const proxy = {
           {
             id: '5',
             title: 'test5',
+            children: [
+                {
+                  id: '7',
+                  title: 'test7',
+                }
+              ]
           },
           {
             id: '6',
@@ -89,7 +103,13 @@ const proxy = {
     ],
     message: 'success',
     success: true,
-  },
+  }
+  return res.json(json);
 };
 
+const proxy = {
+  'GET /api/note/parents': getParents,
+  'GET /api/note/tabs': getTabs,
+  'GET /api/note/tree': getTree,
+};
 export default delay(proxy, 500);

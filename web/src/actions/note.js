@@ -1,9 +1,9 @@
 export const NOTE_NAMESPACE = 'note';
 
-export function GET_PARENTS() {
+export function NOTE_INIT(user) {
   return {
-    type: `${NOTE_NAMESPACE}/getParents`,
-    payload: {},
+    type: `${NOTE_NAMESPACE}/noteInit`,
+    payload: {user},
   };
 }
 
