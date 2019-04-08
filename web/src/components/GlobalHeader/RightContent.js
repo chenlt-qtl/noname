@@ -5,7 +5,7 @@ import moment from 'moment';
 import groupBy from 'lodash/groupBy';
 import NoticeIcon from '../NoticeIcon';
 import HeaderSearch from '../HeaderSearch';
-import HeaderDropdown from '../HeaderDropdown';
+import UserCenter from './UserCenter';
 import SelectLang from '../SelectLang';
 import styles from './index.less';
 
@@ -84,33 +84,10 @@ export default class GlobalHeaderRight extends PureComponent {
       fetchingNotices,
       loadedAllNotices,
       onNoticeVisibleChange,
-      onMenuClick,
       onNoticeClear,
       skeletonCount,
       theme,
     } = this.props;
-    const menu = (
-      <Menu
-        className={styles.menu}
-        style={{ marginRight: 1 }}
-        selectedKeys={[]}
-        onClick={onMenuClick}
-      >
-        <Menu.Item key="userCenter">
-          <Icon type="user" />
-          <FormattedMessage id="menu.account.center" defaultMessage="account center" />
-        </Menu.Item>
-        <Menu.Item key="userinfo">
-          <Icon type="setting" />
-          <FormattedMessage id="menu.account.settings" defaultMessage="account settings" />
-        </Menu.Item>
-        <Menu.Divider />
-        <Menu.Item key="logout">
-          <Icon type="logout" />
-          <FormattedMessage id="menu.account.logout" defaultMessage="logout" />
-        </Menu.Item>
-      </Menu>
-    );
     const loadMoreProps = {
       skeletonCount,
       loadedAll: loadedAllNotices,
@@ -196,21 +173,7 @@ export default class GlobalHeaderRight extends PureComponent {
             {...loadMoreProps}
           />
         </NoticeIcon>
-        {currentUser.name ? (
-          <HeaderDropdown overlay={menu} style={{ marginRight: 8 }}>
-            <span className={`${styles.action} ${styles.account}`}>
-              <Avatar
-                size="small"
-                className={styles.avatar}
-                src={currentUser.avatar}
-                alt="avatar"
-              />
-              <span className={styles.name}>{currentUser.name}</span>
-            </span>
-          </HeaderDropdown>
-        ) : (
-          <Spin size="small" style={{ marginLeft: 8, marginRight: 8 }} />
-        )}
+        <UserCenter currentUser={currentUser}/>
         <SelectLang className={styles.action} />
       </div>
     );

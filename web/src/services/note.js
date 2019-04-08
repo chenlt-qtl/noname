@@ -6,7 +6,14 @@ import func from '../utils/Func';
 
 
 export async function getParents(params) {
-  console.log(123)
   return request('/api/note/parents');
 }
 
+
+export async function getTabs(params) {
+  return request('/api/note/tabs');
+}
+
+export async function getTree(params) {
+  return request('/api/note/tree');
+}

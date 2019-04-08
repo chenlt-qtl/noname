@@ -25,6 +25,7 @@ class User extends PureComponent {
   componentWillMount() {
     const { dispatch } = this.props;
     dispatch(USER_INIT());
+    console.log(1);
   }
 
   onSelectRow = rows => {
@@ -162,7 +163,7 @@ class User extends PureComponent {
     const code = 'user';
 
     const { visible, confirmLoading, checkedTreeKeys } = this.state;
-
+    console.log(2);
     const {
       form,
       loading,

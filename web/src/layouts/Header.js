@@ -54,39 +54,6 @@ class HeaderView extends React.Component {
     });
   };
 
-  handleMenuClick = ({ key }) => {
-    const { dispatch } = this.props;
-    if (key === 'userCenter') {
-      message.success('即将开放');
-      // router.push('/account/center');
-      return;
-    }
-    if (key === 'userinfo') {
-      message.success('即将开放');
-      // router.push('/account/settings/base');
-      return;
-    }
-    if (key === 'triggerError') {
-      router.push('/exception/trigger');
-      return;
-    }
-    if (key === 'logout') {
-      Modal.confirm({
-        title: '退出确认',
-        content: '是否确定退出登录？',
-        okText: '确定',
-        okType: 'danger',
-        cancelText: '取消',
-        onOk() {
-          dispatch({
-            type: 'login/logout',
-          });
-        },
-        onCancel() {},
-      });
-    }
-  };
-
   handleNoticeVisibleChange = visible => {
     if (visible) {
       const { dispatch } = this.props;
@@ -139,7 +106,6 @@ class HeaderView extends React.Component {
             mode="horizontal"
             onCollapse={handleMenuCollapse}
             onNoticeClear={this.handleNoticeClear}
-            onMenuClick={this.handleMenuClick}
             onNoticeVisibleChange={this.handleNoticeVisibleChange}
             {...this.props}
           />
@@ -147,7 +113,6 @@ class HeaderView extends React.Component {
           <GlobalHeader
             onCollapse={handleMenuCollapse}
             onNoticeClear={this.handleNoticeClear}
-            onMenuClick={this.handleMenuClick}
             onNoticeVisibleChange={this.handleNoticeVisibleChange}
             {...this.props}
           />
