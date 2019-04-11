@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import router from 'umi/router';
 import { NOTE_NAMESPACE } from '../actions/note';
-import { getParents,getTabs,getTree} from '../services/note';
+import { getParents,getTabs,getTree,getNote} from '../services/note';
 
 export default {
   namespace: NOTE_NAMESPACE,
@@ -13,6 +13,7 @@ export default {
     tabData: [],
     treeValue: undefined,
     treeData: [],
+    noteData: {},
   },
 
   effects: {
@@ -55,6 +56,17 @@ export default {
         });
       }
     },
+    *getNote({ payload }, { call, put }) {
+      const note = yield call(getNote, payload);
+      if (note.success) {
+        yield put({
+          type: 'setNote',
+          payload: {
+            data: note.data,
+          },
+        });
+      }
+    },
   },
 
   reducers: {
@@ -76,6 +88,12 @@ export default {
       return {
         ...state,
         treeData: action.payload.list,
+      };
+    },
+    setNote(state, action) {
+      return {
+        ...state,
+        noteData: action.payload.data,
       };
     },
   },

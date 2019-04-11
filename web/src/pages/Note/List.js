@@ -11,7 +11,9 @@ import UserCenter from "../../components/GlobalHeader/UserCenter";
 import SiderNote from "../../components/Note/SiderNote";
 import SelectNote from "../../components/Note/SelectNote";
 import { getCurrentUser } from '../../utils/authority';
-import {NOTE_INIT,GET_TABS,GET_TREE} from "../../actions/note";
+import {NOTE_INIT,GET_TABS,GET_TREE,GET_NOTE} from "../../actions/note";
+import BraftEditor from 'braft-editor';
+import 'braft-editor/dist/index.css';
 
 const { Header, Content, Sider } = Layout;
 const TabPane = Tabs.TabPane;
@@ -31,6 +33,9 @@ if(!currentUser){
 class NoteList extends React.Component {
   state = {
     user: currentUser,
+    selectValue: undefined,
+    tabValue: undefined,
+    treeValue: undefined,
   };
   componentWillMount() {
     const {
@@ -50,7 +55,18 @@ class NoteList extends React.Component {
 
 
   onParentSelect = (value) =>{
+    const {
+      dispatch,
+    } = this.props;
 
+    dispatch(GET_TABS(value));
+  };
+
+  onTreeSelect = (item) =>{
+    const {
+      dispatch,
+    } = this.props;
+    dispatch(GET_NOTE(item.key));
   };
 
   render() {
@@ -62,11 +78,12 @@ class NoteList extends React.Component {
         tabData,
         treeValue,
         treeData,
+        noteData,
       },
     } = this.props;
-
+    const noteContent = BraftEditor.createEditorState(noteData["content"]);
     const tabs = tabData.map(d => <TabPane tab={d.title} key={d.id}></TabPane>);
-    const content = (
+    const contentTip = (
       <div>
         <p>创建日期:20190301</p>
         <p>修改日期:20190305</p>
@@ -101,12 +118,12 @@ class NoteList extends React.Component {
                 console.log('enter', value); // eslint-disable-line
               }}
             />
-            <UserCenter currentUser={currentUser}/>
+            <UserCenter currentUser={currentUser} style={{margin:13}}/>
           </div>
         </Header>
         <Layout>
           <Sider width={240} style={{ background: '#fff' }}>
-            <SiderNote treeData={treeData}/>
+            <SiderNote treeData={treeData} onTreeSelect={this.onTreeSelect}/>
           </Sider>
           <Layout style={{ padding: '0 24px 24px' }}>
             <div style={{padding:'10px'}}>
@@ -119,7 +136,7 @@ class NoteList extends React.Component {
                   </Breadcrumb>
                 </Col>
                 <Col className="gutter-row" span={4} style={{textAlign:'right'}}>
-                  <Popover placement="bottomRight" content={content} title="笔记信息">
+                  <Popover placement="bottomRight" content={contentTip} title="笔记信息">
                     <Icon type="info-circle" />
                   </Popover>
                 </Col>
@@ -127,14 +144,13 @@ class NoteList extends React.Component {
             </div>
 
 
-            <Content style={{
-              background: '#fff', padding: 10, margin: 0, minHeight: 280,
+            <Content them='light' style={{
+              background: '#fff', margin: 0
             }}
             >
-              <Form hideRequiredMark>
-                <Card title="基本信息" className={styles.card} bordered={false}>
-                  <TextArea rows={20} />
-                </Card>
+              <Form style={{padding:15}}>
+                <Input name='title' value={noteData.title} placeholder="标题" style={{border:'none'}}/>
+                <BraftEditor value={noteContent} />
               </Form>
             </Content>
           </Layout>

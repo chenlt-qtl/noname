@@ -42,6 +42,7 @@ export default class UserCenter extends PureComponent {
   render() {
     const {
       currentUser,
+      style
     } = this.props;
     const menu = (
       <Menu
@@ -73,6 +74,7 @@ export default class UserCenter extends PureComponent {
                 className={styles.avatar}
                 src={currentUser.avatar}
                 alt="avatar"
+                style={style}
               />
               <span className={styles.name}>{currentUser.name}</span>
             </span>

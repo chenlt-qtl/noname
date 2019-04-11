@@ -11,6 +11,7 @@ export default class SiderNote extends PureComponent {
 
   state = {
     openKeys: ['sub1'],
+    onSelect: null,
   };
 
   /**
@@ -32,6 +33,9 @@ export default class SiderNote extends PureComponent {
   getSubMenuOrItem = item => {
     // doc: add hideChildrenInMenu
     if (item.children && item.children.some(child => child.title)) {
+      const {
+        onSelect,
+      } = this.state;
       return (
         <SubMenu
           title={<span>
@@ -39,6 +43,7 @@ export default class SiderNote extends PureComponent {
                 <span>{item.title}</span>
               </span>}
           key={item.id}
+          onTitleClick={onSelect}
         >
           {this.getNavMenuItems(item.children)}
         </SubMenu>
@@ -61,11 +66,14 @@ export default class SiderNote extends PureComponent {
   render() {
     const {
       treeData,
+      onTreeSelect,
     } = this.props;
+    this.setState({onSelect:onTreeSelect});
     return (
       <Menu
         openKeys={this.state.openKeys}
         onOpenChange={this.onOpenChange}
+        onSelect={onTreeSelect}
         key="Menu"
         mode="inline"
         style={{ padding: '16px 0', width: '100%',height:'100%' }}

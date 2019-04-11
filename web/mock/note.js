@@ -107,9 +107,25 @@ function getTree(req, res) {
   return res.json(json);
 };
 
+function getNote(req, res) {
+  console.log(req);
+  const json = {
+    code: 200,
+    data:{
+        id: '1',
+        title: 'test1',
+        content: '<p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>',
+    },
+    message: 'success',
+    success: true,
+  }
+  return res.json(json);
+};
+
 const proxy = {
   'GET /api/note/parents': getParents,
   'GET /api/note/tabs': getTabs,
   'GET /api/note/tree': getTree,
+  'GET /api/note': getNote,
 };
 export default delay(proxy, 500);

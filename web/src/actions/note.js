@@ -20,3 +20,10 @@ export function GET_TREE(pid) {
     payload: {pid},
   };
 }
+
+export function GET_NOTE( id) {
+  return {
+    type: `${NOTE_NAMESPACE}/getNote`,
+    payload: {id},
+  };
+}

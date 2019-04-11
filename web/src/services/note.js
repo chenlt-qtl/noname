@@ -16,3 +16,7 @@ export async function getTabs(params) {
 export async function getTree(params) {
   return request(`/api/note/tree?${stringify(params)}`);
 }
+
+export async function getNote(params) {
+  return request(`/api/note?${stringify(params)}`);
+}
